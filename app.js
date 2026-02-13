@@ -1,3 +1,7 @@
+// ── Config ──
+
+const REFRESH_INTERVAL = 60000; // 60 seconds
+
 // ── Mock Data ──
 
 const tickets = [
@@ -24,6 +28,16 @@ const meta = {
   slaOverdue: 3,
   lastUpdated: "11:08 AM",
 };
+
+// ── Helpers ──
+
+function getCurrentTime() {
+  return new Date().toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+}
 
 // ── Render Functions ──
 
@@ -53,7 +67,7 @@ function renderStats(data) {
 function renderFooter(data) {
   document.getElementById("footer-oldest").textContent = data.oldestTicket;
   document.getElementById("footer-sla").textContent = data.slaOverdue + " Overdue";
-  document.getElementById("footer-updated").textContent = data.lastUpdated;
+  document.getElementById("footer-updated").textContent = getCurrentTime();
 }
 
 function renderDashboard() {
@@ -64,4 +78,7 @@ function renderDashboard() {
 
 // ── Initialize ──
 
-document.addEventListener("DOMContentLoaded", renderDashboard);
+document.addEventListener("DOMContentLoaded", function () {
+  renderDashboard();
+  setInterval(renderDashboard, REFRESH_INTERVAL);
+});
