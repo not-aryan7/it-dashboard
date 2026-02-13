@@ -1,10 +1,11 @@
 // ── Config ──
 
 const REFRESH_INTERVAL = 60000; // 60 seconds
+const API_URL = "https://helpdesk.clintoncountygov.com/api/dashboard.php";
 
-// ── Mock Data ──
+// ── Mock Data (fallback if API is unavailable) ──
 
-const tickets = [
+const mockTickets = [
   { id: "#1112239", age: "59m",    priority: "Normal",  priorityClass: "normal",       subject: "Please post in Partner Nurse Q1 2026...",    assignedTo: "Karen Ploats-McGrath" },
   { id: "#1112237", age: "2h 30m", priority: "High",    priorityClass: "high",         subject: "Camera Equipment and footage help",          assignedTo: "Catherine LaFountain" },
   { id: "#1112207", age: "10h",    priority: "Normal",  priorityClass: "normal",       subject: "Nessus Scan Results: Server Scan - Re...",   assignedTo: "David Randall" },
@@ -16,17 +17,16 @@ const tickets = [
   { id: "#1112236", age: "9d 7h",  priority: "Overdue", priorityClass: "overdue",      subject: "Sharepoint - Airport Landing Page ...",       assignedTo: "Luis Oquendo" },
 ];
 
-const stats = {
+const mockStats = {
   open: 19,
   overdue: 4,
   highPriority: 3,
   closedToday: 22,
 };
 
-const meta = {
+const mockMeta = {
   oldestTicket: "11 days",
   slaOverdue: 3,
-  lastUpdated: "11:08 AM",
 };
 
 // ── Helpers ──
@@ -70,10 +70,24 @@ function renderFooter(data) {
   document.getElementById("footer-updated").textContent = getCurrentTime();
 }
 
+// ── Fetch and Render ──
+
 function renderDashboard() {
-  renderStats(stats);
-  renderTickets(tickets);
-  renderFooter(meta);
+  fetch(API_URL)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      renderStats(data.stats);
+      renderTickets(data.tickets);
+      renderFooter(data.meta);
+    })
+    .catch(function () {
+      // API unavailable — use mock data
+      renderStats(mockStats);
+      renderTickets(mockTickets);
+      renderFooter(mockMeta);
+    });
 }
 
 // ── Initialize ──
