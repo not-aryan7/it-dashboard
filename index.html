@@ -18,19 +18,19 @@
     <section class="stats">
       <div class="stat">
         <span class="stat-label">OPEN</span>
-        <span class="stat-value">19</span>
+        <span class="stat-value" id="stat-open"></span>
       </div>
       <div class="stat">
         <span class="stat-label">OVERDUE</span>
-        <span class="stat-value overdue">4</span>
+        <span class="stat-value overdue" id="stat-overdue"></span>
       </div>
       <div class="stat">
         <span class="stat-label">HIGH PRIORITY</span>
-        <span class="stat-value high">3</span>
+        <span class="stat-value high" id="stat-high"></span>
       </div>
       <div class="stat">
         <span class="stat-label">CLOSED TODAY</span>
-        <span class="stat-value closed">22</span>
+        <span class="stat-value closed" id="stat-closed"></span>
       </div>
     </section>
 
@@ -47,79 +47,15 @@
             <th>Assigned To</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>#1112239</td>
-            <td>59m</td>
-            <td><span class="priority normal">Normal</span></td>
-            <td class="subject">Please post in Partner Nurse Q1 2026...</td>
-            <td>Karen Ploats-McGrath</td>
-          </tr>
-          <tr>
-            <td>#1112237</td>
-            <td>2h 30m</td>
-            <td><span class="priority high">High</span></td>
-            <td class="subject">Camera Equipment and footage help</td>
-            <td>Catherine LaFountain</td>
-          </tr>
-          <tr>
-            <td>#1112207</td>
-            <td>10h</td>
-            <td><span class="priority normal">Normal</span></td>
-            <td class="subject">Nessus Scan Results: Server Scan - Re...</td>
-            <td>David Randall</td>
-          </tr>
-          <tr>
-            <td>#1112203</td>
-            <td>19h 2m</td>
-            <td><span class="priority normal-alert">Normal</span></td>
-            <td class="subject">External Drive Missing and Error</td>
-            <td>Tammy Lacey</td>
-          </tr>
-          <tr>
-            <td>#1112200</td>
-            <td>1d 21h</td>
-            <td><span class="priority overdue">Overdue</span></td>
-            <td class="subject">Google account for subpoenas</td>
-            <td>Adriena Sadler</td>
-          </tr>
-          <tr>
-            <td>#1112108</td>
-            <td>2d 4h</td>
-            <td><span class="priority normal-alert">Normal</span></td>
-            <td class="subject">Slow printing</td>
-            <td>John Gaver</td>
-          </tr>
-          <tr>
-            <td>#1112107</td>
-            <td>3d 7h</td>
-            <td><span class="priority high">High</span></td>
-            <td class="subject">Missing apps</td>
-            <td>John Gaver</td>
-          </tr>
-          <tr>
-            <td>#1112225</td>
-            <td>7d 22h</td>
-            <td><span class="priority overdue">Overdue</span></td>
-            <td class="subject">FW: Operator client?</td>
-            <td>Peggy Rey</td>
-          </tr>
-          <tr>
-            <td>#1112236</td>
-            <td>9d 7h</td>
-            <td><span class="priority overdue">Overdue</span></td>
-            <td class="subject">Sharepoint - Airport Landing Page ...</td>
-            <td>Luis Oquendo</td>
-          </tr>
-        </tbody>
+        <tbody id="ticket-body"></tbody>
       </table>
     </main>
 
     <!-- Footer -->
     <footer class="footer">
-      <div class="footer-item">Oldest Ticket: <strong>11 days</strong></div>
-      <div class="footer-item">SLA Status: <span class="sla-warning">3 Overdue</span></div>
-      <div class="footer-item">Last Updated: <strong>11:08 AM</strong></div>
+      <div class="footer-item">Oldest Ticket: <strong id="footer-oldest"></strong></div>
+      <div class="footer-item">SLA Status: <span class="sla-warning" id="footer-sla"></span></div>
+      <div class="footer-item">Last Updated: <strong id="footer-updated"></strong></div>
     </footer>
 
   </div>
