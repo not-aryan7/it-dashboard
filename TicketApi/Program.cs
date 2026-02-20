@@ -29,7 +29,8 @@ app.MapGet("/api/tickets", async () =>
         LEFT JOIN ost_ticket_status ts ON ts.id = t.status_id
         LEFT JOIN ost_staff s ON s.staff_id = t.staff_id
         WHERE ts.state = 'open'
-        ORDER BY t.created DESC";
+        ORDER BY t.created DESC
+        LIMIT 20";
 
     using var cmd = new MySqlCommand(sql, connection);
     using var reader = await cmd.ExecuteReaderAsync();
@@ -109,7 +110,7 @@ app.MapGet("/api/tickets", async () =>
 
     return Results.Ok(new
     {
-        tickets,
+        tickets = tickets.Take(10).ToList(),
         stats = new
         {
             open = tickets.Count,
