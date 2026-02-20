@@ -1,7 +1,7 @@
 // ── Config ──
 
 const REFRESH_INTERVAL = 60000; // 60 seconds
-const API_URL = "#"; // Will be set to C# API endpoint later
+const API_URL = "http://localhost:5045/api/tickets";
 
 // ── Mock Data ──
 
@@ -70,12 +70,24 @@ function renderFooter(data) {
   document.getElementById("footer-updated").textContent = getCurrentTime();
 }
 
-// ── Render Dashboard ──
+// ── Fetch and Render ──
 
 function renderDashboard() {
-  renderStats(stats);
-  renderTickets(tickets);
-  renderFooter(meta);
+  fetch(API_URL)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      renderStats(data.stats);
+      renderTickets(data.tickets);
+      renderFooter(data.meta);
+    })
+    .catch(function () {
+      // API unavailable — use mock data
+      renderStats(stats);
+      renderTickets(tickets);
+      renderFooter(meta);
+    });
 }
 
 // ── Initialize ──
