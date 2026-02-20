@@ -18,3 +18,9 @@ LEFT JOIN ost_staff s ON s.staff_id = t.staff_id
 WHERE ts.state = 'open'
 ORDER BY t.created DESC;
 ```
+
+## Console Test - Fetch API
+
+```js
+fetch("http://localhost:5045/api/tickets").then(r => r.json()).then(d => console.log(d)).catch(e => console.log("ERROR:", e))
+```
