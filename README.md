@@ -24,3 +24,34 @@ ORDER BY t.created DESC;
 ```js
 fetch("http://localhost:5045/api/tickets").then(r => r.json()).then(d => console.log(d)).catch(e => console.log("ERROR:", e))
 ```
+
+## Git Push Commands
+
+```
+echo bin/ > .gitignore
+echo obj/ >> .gitignore
+echo *.user >> .gitignore
+echo *.suo >> .gitignore
+echo .vs/ >> .gitignore
+```
+
+```
+git add .gitignore
+git add Program.cs
+git add appsettings.json
+git add app.js
+git add index.html
+git add styles.css
+git add README.md
+git add TicketApi/TicketApi.csproj
+git add TicketApi/Program.cs
+git add TicketApi/appsettings.json
+```
+
+```
+git commit -m "Update dashboard with live API connection"
+```
+
+```
+git push origin main
+```
