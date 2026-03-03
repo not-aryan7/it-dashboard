@@ -6,15 +6,15 @@ const API_URL = "http://localhost:5045/api/tickets";
 // ── Mock Data ──
 
 const tickets = [
-  { id: "#1112239", age: "59m",    priority: "Normal",  priorityClass: "normal",       subject: "Please post in Partner Nurse Q1 2026...",    assignedTo: "Karen Ploats-McGrath" },
-  { id: "#1112237", age: "2h 30m", priority: "High",    priorityClass: "high",         subject: "Camera Equipment and footage help",          assignedTo: "Catherine LaFountain" },
-  { id: "#1112207", age: "10h",    priority: "Normal",  priorityClass: "normal",       subject: "Nessus Scan Results: Server Scan - Re...",   assignedTo: "David Randall" },
-  { id: "#1112203", age: "19h 2m", priority: "Normal",  priorityClass: "normal-alert", subject: "External Drive Missing and Error",            assignedTo: "Tammy Lacey" },
-  { id: "#1112200", age: "1d 21h", priority: "Overdue", priorityClass: "overdue",      subject: "Google account for subpoenas",               assignedTo: "Adriena Sadler" },
-  { id: "#1112108", age: "2d 4h",  priority: "Normal",  priorityClass: "normal-alert", subject: "Slow printing",                              assignedTo: "John Gaver" },
-  { id: "#1112107", age: "3d 7h",  priority: "High",    priorityClass: "high",         subject: "Missing apps",                               assignedTo: "John Gaver" },
-  { id: "#1112225", age: "7d 22h", priority: "Overdue", priorityClass: "overdue",      subject: "FW: Operator client?",                       assignedTo: "Peggy Rey" },
-  { id: "#1112236", age: "9d 7h",  priority: "Overdue", priorityClass: "overdue",      subject: "Sharepoint - Airport Landing Page ...",       assignedTo: "Luis Oquendo" },
+  { id: "#1112239", age: "59m",    priority: "Normal",  priorityClass: "normal",       subject: "Please post in Partner Nurse Q1 2026...",    from: "Sarah Johnson",     assignedTo: "Karen Ploats-McGrath" },
+  { id: "#1112237", age: "2h 30m", priority: "High",    priorityClass: "high",         subject: "Camera Equipment and footage help",          from: "Mike Chen",         assignedTo: "Catherine LaFountain" },
+  { id: "#1112207", age: "10h",    priority: "Normal",  priorityClass: "normal",       subject: "Nessus Scan Results: Server Scan - Re...",   from: "Auto Scanner",      assignedTo: "David Randall" },
+  { id: "#1112203", age: "19h 2m", priority: "Normal",  priorityClass: "normal-alert", subject: "External Drive Missing and Error",            from: "Lisa Martinez",     assignedTo: "Tammy Lacey" },
+  { id: "#1112200", age: "1d 21h", priority: "Overdue", priorityClass: "overdue",      subject: "Google account for subpoenas",               from: "Tom Bradley",       assignedTo: "Adriena Sadler" },
+  { id: "#1112108", age: "2d 4h",  priority: "Normal",  priorityClass: "normal-alert", subject: "Slow printing",                              from: "Amy Wilson",        assignedTo: "John Gaver" },
+  { id: "#1112107", age: "3d 7h",  priority: "High",    priorityClass: "high",         subject: "Missing apps",                               from: "Robert Davis",      assignedTo: "John Gaver" },
+  { id: "#1112225", age: "7d 22h", priority: "Overdue", priorityClass: "overdue",      subject: "FW: Operator client?",                       from: "Jennifer Lee",      assignedTo: "Peggy Rey" },
+  { id: "#1112236", age: "9d 7h",  priority: "Overdue", priorityClass: "overdue",      subject: "Sharepoint - Airport Landing Page ...",       from: "Carlos Ruiz",       assignedTo: "Luis Oquendo" },
 ];
 
 const stats = {
@@ -51,6 +51,7 @@ function renderTickets(data) {
         <td>${t.age}</td>
         <td><span class="priority ${t.priorityClass}">${t.priority}</span></td>
         <td class="subject">${t.subject}</td>
+        <td>${t.from}</td>
         <td>${t.assignedTo}</td>
       </tr>`
     )
