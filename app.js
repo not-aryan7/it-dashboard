@@ -2,6 +2,58 @@
 
 const REFRESH_INTERVAL = 60000; // 60 seconds
 const API_URL = "http://localhost:5045/api/tickets";
+const AUTH_USER = "dashboard";
+const AUTH_PASS = "Clinton518???";
+const COOKIE_NAME = "dashboard_auth";
+const COOKIE_DAYS = 30;
+
+// ── Cookie Helpers ──
+
+function setCookie(name, value, days) {
+  var expires = "";
+  if (days) {
+    var date = new Date();
+    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+    expires = "; expires=" + date.toUTCString();
+  }
+  document.cookie = name + "=" + value + expires + "; path=/";
+}
+
+function getCookie(name) {
+  var match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
+  return match ? match[2] : null;
+}
+
+// ── Auth ──
+
+function checkAuth() {
+  if (getCookie(COOKIE_NAME) === "true") {
+    showDashboard();
+  } else {
+    document.getElementById("login-screen").style.display = "flex";
+    document.getElementById("dashboard").style.display = "none";
+  }
+}
+
+function handleLogin() {
+  var user = document.getElementById("login-user").value;
+  var pass = document.getElementById("login-pass").value;
+  var error = document.getElementById("login-error");
+
+  if (user === AUTH_USER && pass === AUTH_PASS) {
+    setCookie(COOKIE_NAME, "true", COOKIE_DAYS);
+    showDashboard();
+  } else {
+    error.textContent = "Invalid credentials";
+  }
+}
+
+function showDashboard() {
+  document.getElementById("login-screen").style.display = "none";
+  document.getElementById("dashboard").style.display = "";
+  renderDashboard();
+  setInterval(renderDashboard, REFRESH_INTERVAL);
+}
 
 // ── Mock Data ──
 
@@ -94,6 +146,15 @@ function renderDashboard() {
 // ── Initialize ──
 
 document.addEventListener("DOMContentLoaded", function () {
-  renderDashboard();
-  setInterval(renderDashboard, REFRESH_INTERVAL);
+  checkAuth();
+
+  document.getElementById("login-btn").addEventListener("click", handleLogin);
+
+  // Allow pressing Enter to log in
+  document.getElementById("login-pass").addEventListener("keydown", function (e) {
+    if (e.key === "Enter") handleLogin();
+  });
+  document.getElementById("login-user").addEventListener("keydown", function (e) {
+    if (e.key === "Enter") handleLogin();
+  });
 });

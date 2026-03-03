@@ -7,7 +7,21 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="dashboard">
+
+  <!-- Login Screen -->
+  <div id="login-screen" class="login-screen">
+    <div class="login-card">
+      <h1 class="login-title">IT OPERATIONS</h1>
+      <p class="login-subtitle">Sign in to view the dashboard</p>
+      <input type="text" id="login-user" class="login-input" placeholder="Username" autocomplete="off" />
+      <input type="password" id="login-pass" class="login-input" placeholder="Password" />
+      <button id="login-btn" class="login-btn">Sign In</button>
+      <span id="login-error" class="login-error"></span>
+    </div>
+  </div>
+
+  <!-- Dashboard (hidden until authenticated) -->
+  <div class="dashboard" id="dashboard" style="display:none">
 
     <!-- Header -->
     <header class="header">

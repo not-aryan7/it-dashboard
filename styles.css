@@ -1,3 +1,87 @@
+/* ── Login Screen ── */
+.login-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #0d0d1a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.login-card {
+  width: 340px;
+  text-align: center;
+}
+
+.login-title {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 6px;
+  color: #ffffff;
+  margin-bottom: 8px;
+}
+
+.login-subtitle {
+  font-size: 14px;
+  color: #6a6a7a;
+  margin-bottom: 32px;
+}
+
+.login-input {
+  display: block;
+  width: 100%;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  color: #e0e0e6;
+  font-size: 16px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.login-input:focus {
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.login-input::placeholder {
+  color: #6a6a7a;
+}
+
+.login-btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  margin-top: 8px;
+  background: #3dd68c;
+  color: #0d0d1a;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.login-btn:hover {
+  background: #2fc47b;
+}
+
+.login-error {
+  display: block;
+  margin-top: 16px;
+  font-size: 14px;
+  color: #f55050;
+  min-height: 20px;
+}
+
 /* ── Reset ── */
 *, *::before, *::after {
   margin: 0;
