@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using MySqlConnector;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +14,8 @@ var authToken = Guid.NewGuid().ToString();
 
 // Read credentials from appsettings.json
 var authUser = builder.Configuration["Auth:Username"] ?? "dashboard";
-var authPass = builder.Configuration["Auth:Password"] ?? "";
+var authHash = builder.Configuration["Auth:PasswordHash"] ?? "";
+var authSalt = builder.Configuration["Auth:PasswordSalt"] ?? "";
 
 // ── Login endpoint ──
 app.MapPost("/api/login", async (HttpContext context) =>
@@ -24,7 +26,12 @@ app.MapPost("/api/login", async (HttpContext context) =>
     var username = json.RootElement.GetProperty("username").GetString();
     var password = json.RootElement.GetProperty("password").GetString();
 
-    if (username == authUser && password == authPass)
+    // Hash the typed password with the stored salt and compare
+    var saltBytes = Convert.FromBase64String(authSalt);
+    var hashBytes = Rfc2898DeriveBytes.Pbkdf2(password!, saltBytes, 100000, HashAlgorithmName.SHA256, 32);
+    var hashString = Convert.ToBase64String(hashBytes);
+
+    if (username == authUser && hashString == authHash)
     {
         return Results.Ok(new { token = authToken });
     }
