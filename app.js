@@ -4,30 +4,12 @@ const REFRESH_INTERVAL = 60000; // 60 seconds
 const API_BASE = "http://localhost:5045";
 const API_URL = API_BASE + "/api/tickets";
 const LOGIN_URL = API_BASE + "/api/login";
-const COOKIE_NAME = "dashboard_auth";
-const COOKIE_DAYS = 30;
-
-// ── Cookie Helpers ──
-
-function setCookie(name, value, days) {
-  var expires = "";
-  if (days) {
-    var date = new Date();
-    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-    expires = "; expires=" + date.toUTCString();
-  }
-  document.cookie = name + "=" + value + expires + "; path=/";
-}
-
-function getCookie(name) {
-  var match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
-  return match ? match[2] : null;
-}
+var AUTH_KEY = "dashboard_auth";
 
 // ── Auth ──
 
 function checkAuth() {
-  var token = getCookie(COOKIE_NAME);
+  var token = localStorage.getItem(AUTH_KEY);
   if (token) {
     // Verify the token still works by testing the API
     fetch(API_URL, {
@@ -72,7 +54,7 @@ function handleLogin() {
       }
     })
     .then(function (data) {
-      setCookie(COOKIE_NAME, data.token, COOKIE_DAYS);
+      localStorage.setItem(AUTH_KEY, data.token);
       showDashboard();
     })
     .catch(function () {
@@ -158,7 +140,7 @@ function renderFooter(data) {
 // ── Fetch and Render ──
 
 function renderDashboard() {
-  var token = getCookie(COOKIE_NAME);
+  var token = localStorage.getItem(AUTH_KEY);
   fetch(API_URL, {
     headers: { "Authorization": "Bearer " + token }
   })
