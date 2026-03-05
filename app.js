@@ -1,9 +1,9 @@
 // ── Config ──
 
 const REFRESH_INTERVAL = 60000; // 60 seconds
-const API_URL = "http://localhost:5045/api/tickets";
-const AUTH_USER = "dashboard";
-const AUTH_PASS = "Clinton518???";
+const API_BASE = "http://localhost:5045";
+const API_URL = API_BASE + "/api/tickets";
+const LOGIN_URL = API_BASE + "/api/login";
 const COOKIE_NAME = "dashboard_auth";
 const COOKIE_DAYS = 30;
 
@@ -27,12 +27,31 @@ function getCookie(name) {
 // ── Auth ──
 
 function checkAuth() {
-  if (getCookie(COOKIE_NAME) === "true") {
-    showDashboard();
+  var token = getCookie(COOKIE_NAME);
+  if (token) {
+    // Verify the token still works by testing the API
+    fetch(API_URL, {
+      headers: { "Authorization": "Bearer " + token }
+    })
+      .then(function (response) {
+        if (response.ok) {
+          showDashboard();
+        } else {
+          showLogin();
+        }
+      })
+      .catch(function () {
+        // API down — show login
+        showLogin();
+      });
   } else {
-    document.getElementById("login-screen").style.display = "flex";
-    document.getElementById("dashboard").style.display = "none";
+    showLogin();
   }
+}
+
+function showLogin() {
+  document.getElementById("login-screen").style.display = "flex";
+  document.getElementById("dashboard").style.display = "none";
 }
 
 function handleLogin() {
@@ -40,12 +59,25 @@ function handleLogin() {
   var pass = document.getElementById("login-pass").value;
   var error = document.getElementById("login-error");
 
-  if (user === AUTH_USER && pass === AUTH_PASS) {
-    setCookie(COOKIE_NAME, "true", COOKIE_DAYS);
-    showDashboard();
-  } else {
-    error.textContent = "Invalid credentials";
-  }
+  fetch(LOGIN_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username: user, password: pass })
+  })
+    .then(function (response) {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error("Invalid");
+      }
+    })
+    .then(function (data) {
+      setCookie(COOKIE_NAME, data.token, COOKIE_DAYS);
+      showDashboard();
+    })
+    .catch(function () {
+      error.textContent = "Invalid credentials";
+    });
 }
 
 function showDashboard() {
@@ -126,11 +158,20 @@ function renderFooter(data) {
 // ── Fetch and Render ──
 
 function renderDashboard() {
-  fetch(API_URL)
+  var token = getCookie(COOKIE_NAME);
+  fetch(API_URL, {
+    headers: { "Authorization": "Bearer " + token }
+  })
     .then(function (response) {
+      if (response.status === 401) {
+        // Token expired (server restarted) — show login
+        showLogin();
+        return;
+      }
       return response.json();
     })
     .then(function (data) {
+      if (!data) return;
       renderStats(data.stats);
       renderTickets(data.tickets);
       renderFooter(data.meta);

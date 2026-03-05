@@ -8,8 +8,39 @@ var app = builder.Build();
 
 app.UseCors(policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
-app.MapGet("/api/tickets", async () =>
+// Generate a random auth token at startup
+var authToken = Guid.NewGuid().ToString();
+
+// Read credentials from appsettings.json
+var authUser = builder.Configuration["Auth:Username"] ?? "dashboard";
+var authPass = builder.Configuration["Auth:Password"] ?? "";
+
+// ── Login endpoint ──
+app.MapPost("/api/login", async (HttpContext context) =>
 {
+    using var bodyReader = new StreamReader(context.Request.Body);
+    var body = await bodyReader.ReadToEndAsync();
+    var json = System.Text.Json.JsonDocument.Parse(body);
+    var username = json.RootElement.GetProperty("username").GetString();
+    var password = json.RootElement.GetProperty("password").GetString();
+
+    if (username == authUser && password == authPass)
+    {
+        return Results.Ok(new { token = authToken });
+    }
+
+    return Results.Unauthorized();
+});
+
+// ── Tickets endpoint (protected) ──
+app.MapGet("/api/tickets", async (HttpContext context) =>
+{
+    // Check for valid auth token
+    var authHeader = context.Request.Headers["Authorization"].FirstOrDefault();
+    if (authHeader == null || authHeader != $"Bearer {authToken}")
+    {
+        return Results.Unauthorized();
+    }
     var connectionString = builder.Configuration.GetConnectionString("MySQL");
     using var connection = new MySqlConnection(connectionString);
     await connection.OpenAsync();
